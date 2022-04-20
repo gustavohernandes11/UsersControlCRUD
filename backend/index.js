@@ -14,6 +14,6 @@ consign()
 .into(app)
 
 app.listen('3000', (req, res) => {
-    console.log('Backend funcionando, eu espero')
+    console.log('Backend funcionando, porta 3000')
 })
 
