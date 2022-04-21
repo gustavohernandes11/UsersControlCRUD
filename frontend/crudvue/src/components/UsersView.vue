@@ -64,10 +64,11 @@
 </template>
 
 <script>
-import { baseApiUrl } from "../../global";
+import { baseApiUrl } from "@/global";
 import axios from "axios";
 
 export default {
+  name: "UsersView",
   components: {},
   data: function () {
     return {
@@ -136,7 +137,7 @@ export default {
         this.loadUsers()
         this.onEditMode = false
 
-    },
+    }
   },
   mounted() {
     this.loadUsers();

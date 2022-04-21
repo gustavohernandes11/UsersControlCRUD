@@ -2,8 +2,8 @@
   <div class="registerpage">
     <h1>Cadastro de usuário</h1>
     <p>Informe os dados</p>
-    <form id="register">
-      <input
+    <form  id="register">
+      <input 
         v-model="user.name"
         type="text"
         class="jsInputName"
@@ -15,6 +15,7 @@
         type="email"
         class="jsInputEmail"
         placeholder="Email"
+        required
         autocomplete="none"
       />
       <input
@@ -28,38 +29,68 @@
       />
       <button type="button" @click="postUser()">Enviar</button>
     </form>
+
+    <AlertBox
+      v-model="alerts"
+      v-if="alerts.length > 0"
+      :message="alerts[alerts.length - 1]"
+    />
   </div>
 </template>
 
 <script>
+import AlertBox from "./AlertBox.vue";
 import axios from "axios";
 import { baseApiUrl } from "@/global";
 
 export default {
-  name: "RegisterPage",
+  name: "RegisterView",
+  components: {
+    AlertBox,
+  },
   data: function () {
     return {
+      alerts: [],
       user: {
-        name: '',
-        email: '',
-        age: ''
+        name: "",
+        email: "",
+        age: "",
       },
     };
   },
   methods: {
     postUser() {
-      console.log(JSON.stringify(this.user));
+      this.alerts.push('')
 
+      console.log(JSON.stringify(this.user, this.alerts));
+
+      if (!this.user.name || !this.user.email || !this.user.age) {
+        return this.alerts.push("Preencha todos os campos!");
+      } 
+      if (this.user.name.length < 3 || this.user.email.length < 3 ) {
+        return this.alerts.push("Nome e email devem ter no mínimo 4 caracteres!");
+      }
+      if (this.user.email.search('@') === -1) {
+        return this.alerts.push("Email inválido: @!");
+      }
+      if (this.user.email.split(' ').length !== 1) {
+        console.log(this.user.email.split(' ').length !== 1)
+        return this.alerts.push("Email inválido: não utilize espaçamento");
+      }
       const url = `${baseApiUrl}/users`;
 
       axios.post(url, this.user).then(() => {
-      this.resetForm();
-      });
+        this.alerts.push("Adicionado!")
+        this.resetForm();
+      }).catch(() => this.alerts.push("Email já cadastrado!"));
     },
 
     resetForm() {
-      this.user = {}
+      this.user = {};
     },
+    cleanAlerts(){
+      this.alerts = []
+    }
   },
 };
 </script>
