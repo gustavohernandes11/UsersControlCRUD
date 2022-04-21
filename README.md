@@ -1,5 +1,6 @@
 # UsersControl
-Vuejs e PostgreSQL
+Vuejs e PostgreSQL. 
+
 Sistema de cadastro de usuários com leitura, alteração, remoção e inserção de informações num Banco de Dados.
 
 ## Propósito
